@@ -2,6 +2,7 @@
 const express = require('express');
 const appConfig=require('./config/appConfig');
 const fs=require('fs');
+const mongoose= require('mongoose');
 //creating an instance of the class
 const app = express()
 const port = 3000
@@ -19,4 +20,10 @@ fs.readdirSync(routesPath).forEach(function(file){
 });
 //end bootstrap route
 
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
+app.listen(appConfig.port, () =>{
+    console.log(`Example app listening at http://localhost:${port}`);
+
+    //creating the mongo db connection here 
+    let db=mongoose.connect(appConfig.db.uri,{useMongoClient: true});
+
+})
