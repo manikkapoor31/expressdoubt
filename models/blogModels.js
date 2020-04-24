@@ -1,7 +1,7 @@
 const mongoose=require('mongoose')
 
 const Schema= mongoose.Schema;
-let blogSchema=mongoose.Schema;
+//let blogSchema=mongoose.Schema;
 let blogSchema=new Schema(
     {
         blogId:{ type:String, unique: true },
