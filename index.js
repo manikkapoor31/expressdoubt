@@ -5,7 +5,14 @@ const fs=require('fs');
 const mongoose= require('mongoose');
 //creating an instance of the class
 const app = express()
+
+const cookieParser=require('cookie-parser')
+const bodyParser= require('body-parser')
 const port = 3000
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended:false}))
+app.use(cookieParser())
 
 //Bootstrap route
 let routesPath='./routes';
