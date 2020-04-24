@@ -1,4 +1,4 @@
-const express= require('express')
+/*const express= require('express')
 let setRouter=(app)=>{
     let helloWorldFunction=(req,res)=>res.send('Hello World')
     app.get('/hello-world',helloWorldFunction)
@@ -8,4 +8,4 @@ let setRouter=(app)=>{
 }//end setRouter function
 module.exports= {
     setRouter:setRouter
-}
+}*/
