@@ -4,7 +4,7 @@ appConfig.port=3000//port has to be 4 digits
 appConfig.allowedCorsOrigin="*";
 appConfig.env="dev"
 appConfig.db={
-    uri: 'mongodb://test:test@127.0.0.1:27017/blogAppDB' //connection string
+    uri: 'mongodb://127.0.0.1:27017/blogAppDB' //connection string
 }
 appConfig.apiVersion='/api/v1';
 module.exports={
@@ -13,4 +13,4 @@ module.exports={
     environment:appConfig.env,
     db:appConfig.db,
     apiVersion:appConfig.apiVersion
-}//end of
+}//end module exports
