@@ -36,7 +36,8 @@ let createBlog=(req,res)=>{
         isPublished:true,
         category:req.body.category,
         author:req.body.fullName,
-        crea
+        created:today,
+        lastModified:today
     })
     let tags=(req.body.tags!=undefined&&req.body.tags!=null&&req.body.tags!='')?req.body.tags.split(','):[] 
     newBlog.tags=tags

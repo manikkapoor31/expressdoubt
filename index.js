@@ -9,6 +9,8 @@ const appConfig=require('./config/appConfig');
 //creating an instance of the class
 const cookieParser=require('cookie-parser')
 const bodyParser= require('body-parser')
+const globalErrorMiddleware=require('./middlewares/appErrorHandler');
+const routeLoggerMiddleware=require('./middlewares/routeLogger.js')
 const app = express()
 
 
@@ -18,6 +20,9 @@ const port = 3000
 app.use(bodyParser.json()) //using a middleware [app-application] expecting json input
 app.use(bodyParser.urlencoded({extended:false}))//expecting urlencoded input 
 app.use(cookieParser())
+
+app.use(globalErrorMiddleware.globalErrorHandler)
+app.use(routeLoggerMiddleware.logIp)
 
 //Bootstrap Models
 let modelsPath='./models';
@@ -45,6 +50,7 @@ fs.readdirSync(routesPath).forEach(function(file){
 });
 //end bootstrap route
 
+app.use(globalErrorMiddleware.globalNotFoundHandler)
 
 
 mongoose.connection.on('error',function(err){
