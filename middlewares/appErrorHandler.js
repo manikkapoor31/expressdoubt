@@ -9,7 +9,7 @@ let notFoundHandler=(req,res)=>{
     res.status(404).send('Route not found in the application')
 }
 
-module.exports{
+module.exports={
     globalErrorHandler:errorHandler,
     globalNotFoundHandler:notFoundHandler
 }

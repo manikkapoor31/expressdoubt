@@ -18,4 +18,4 @@ let blogSchema=new Schema(
         lastModified:{ type:Date, default: Date.now},
     }
 )
-mongoose.model('Blog',Schema)
+mongoose.model('Blog',blogSchema)

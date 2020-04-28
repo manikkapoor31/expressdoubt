@@ -27,7 +27,7 @@ let requestIpLogger=(req,res,next)=>{
         next()
     }
     module.exports={
-        logIp:requestIpLogger;
+        logIp:requestIpLogger
     }
 
 }

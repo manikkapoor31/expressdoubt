@@ -15,14 +15,17 @@ let getAllBlog=(req,res)=>{
     BlogModel.find().select('-__V - _id').lean().exec((err,result)=>{
         if(err){
             console.log(err);
-            res.send(err)
+            let apiResponse=response.generate(true,'Failed To Find Blog Details',500,null)
+            res.send(apiResponse);
         }
         else if(result == undefined || result == null || result == ''){
             console.log("No Blog Found")
-            res.send("No Blog Found")
+            let apiResponse=response.generate(true,'No Blog Found',404,null)
+            res.send(apiResponse)
         }
         else{
-            res.send(result)
+            let apiResponse=response.generate(false,'All Blog Details Found',200,result);
+            res.send(apiResponse);
         }
     })
 }
@@ -55,136 +58,248 @@ let createBlog=(req,res)=>{
  * function to read single blog.
  */
 let viewByBlogId = (req, res) => {
-
-    BlogModel.findOne({ 'blogId': req.params.blogId }, (err, result) => {
-
-        if (err) {
-            console.log(err)
-            res.send(err)
-        } else if (result == undefined || result == null || result == '') {
-            console.log('No Blog Found')
-            res.send("No Blog Found")
-        } else {
-            res.send(result)
-
-        }
-    })
+    if(check.isEmpty(req.params.blogId)){
+        console.log('blogID should be passed')
+        let apiResponse= response.generate(true,'Blog is Missing',403,null)
+        res.send(apiResponse);
+    }
+    else{
+        BlogModel.findOne({ 'blogId': req.params.blogId }, (err, result) => {
+            console.log("blogId should be passed");
+            let apiResponse=response.generate(true,'blogId is missing',403,null)
+            res.send(apiResponse);
+            if (err) {
+                console.log("Error Occured")
+                logger.error(`Error Occured:${err}`,`Database`,10);
+                let apiResponse=response.generate(true,'Error Occured',500,null)
+                res.send(apiResponse)
+            } else if (result == undefined || result == null || result == '') {
+                console.log('No Blog Found');
+                let response=response.generate(true,`Error Occured`,404,null)
+                res.send(apiResponse)
+            } else {
+                logger.info("Blog found successfully","BlogController:viewByBlogId",5)
+                let response=response.generate(false,'Blog Found Successfuly',200,result);
+                res.send(apiResponse)
+    
+            }
+        })
+    }   
 }
 /**
  * function to read blogs by category.
  */
 let viewByCategory = (req, res) => {
-
-    BlogModel.find({ 'category': req.params.category }, (err, result) => {
-
-        if (err) {
-            console.log(err)
-            res.send(err)
-        } else if (result == undefined || result == null || result == '') {
-            console.log('No Blog Found')
-            res.send("No Blog Found")
-        } else {
-            res.send(result)
-
-        }
-    })
+    if(check.isEmpty(req.params.categorygId)){
+        console.log('blogID should be passed')
+        let apiResponse= response.generate(true,'Blog is Missing',403,null)
+        res.send(apiResponse);
+    }
+    else{
+        BlogModel.find({ 'category': req.params.category }, (err, result) => {
+            if (err) {
+                logger.error(`Error Occured:${err}`,Database,10)
+                let apiResponse=response.generate(true,'Error Occured',500,null)    
+                res.send(apiResponse)
+            } else if (check.isEmpty(result)) {
+                console.log('No Blog Found')
+                let apiResponse=response.generate(true,'Blog Not Found',404,null)
+                res.send(apiResponse);
+            } else {
+                let apiResponse=response.generate(false,'BlogsFound Successfully',200,result)
+                res.send(apiResponse);
+    
+            }
+        })
+    }
 }
 
 /**
  * function to read blogs by author.
  */
 let viewByAuthor = (req, res) => {
+    if (check.isEmpty(req.params.author)) {
 
-    BlogModel.find({ 'author': req.params.author }, (err, result) => {
+        console.log('author should be passed')
+        let apiResponse = response.generate(true, 'author is missing', 403, null)
+        res.send(apiResponse)
+    }
+    else{
+        BlogModel.find({ 'author': req.params.author }, (err, result) => {
 
-        if (err) {
-            console.log(err)
-            res.send(err)
-        } else if (result == undefined || result == null || result == '') {
-            console.log('No Blog Found')
-            res.send("No Blog Found")
-        } else {
-            res.send(result)
+            if (err) {
+                console.log("Error Occured");
+                logger.error(`Error Occured ${err}`,'Database',10)
+                let apiResponse=response.generate(true,'Error Occured',500,null)
+                res.send(apiResponse);
+            } else if (check.isEmpty(result)) {
+                console.log('No Blog Found')
+                let apiResponse=response.generate(true,'BLogs Not Found',404,null)
+                res.send(apiResponse)
+            } else {
+                console.log("Blogs Found Successfully")
+                let apiResponse=response.generate(false,'BLogs Found Successfully',200,result);
+                res.send(apiResponse);
+    
+            }
+        })
 
-        }
-    })
+    }
+
+    
 }
 /**
  * function to edit blog by admin.
  */
 let editBlog = (req, res) => {
 
-    let options = req.body;
-    console.log(options);
-    BlogModel.update({ 'blogId': req.params.blogId }, options, { multi: true }).exec((err, result) => {
+    if (check.isEmpty(req.params.blogId)) {
 
-        if (err) {
-            console.log(err)
-            res.send(err)
-        } else if (result == undefined || result == null || result == '') {
-            console.log('No Blog Found')
-            res.send("No Blog Found")
-        } else {
-            res.send(result)
+        console.log('blogId should be passed')
+        let apiResponse = response.generate(true, 'blogId is missing', 403, null)
+        res.send(apiResponse)
+    } else {
 
-        }
-    })
+        let options = req.body;
+        console.log(options);
+        BlogModel.update({ 'blogId': req.params.blogId }, options, { multi: true }).exec((err, result) => {
+
+            if (err) {
+
+                console.log('Error Occured.')
+                logger.error(`Error Occured : ${err}`, 'Database', 10)
+                let apiResponse = response.generate(true, 'Error Occured.', 500, null)
+                res.send(apiResponse)
+            } else if (check.isEmpty(result)) {
+
+                console.log('Blog Not Found.')
+                let apiResponse = response.generate(true, 'Blog Not Found', 404, null)
+                res.send(apiResponse)
+            } else {
+                console.log('Blog Edited Successfully')
+                let apiResponse = response.generate(false, 'Blog Edited Successfully.', 200, result)
+                res.send(apiResponse)
+            }
+        })
+    }
 }
+/**
+* function to find the assignment.
+*/
+let findBlogToEdit = (blogId) => {
 
+		if (check.isEmpty(req.params.blogId)) {
 
-
+			console.log('blogId should be passed')
+			let apiResponse = response.generate(true, 'blogId is missing', 403, null)
+			reject(apiResponse)
+		} else {
+			return new Promise((resolve, reject) => {
+				BlogModel.findOne({ 'blogId': req.params.blogId }, (err, blog) => {
+					if (err) {
+						console.log('Error Occured.')
+						logger.error(`Error Occured : ${err}`, 'Database', 10)
+						let apiResponse = response.generate(true, 'Error Occured.', 500, null)
+						reject(apiResponse)
+					} else if (check.isEmpty(blog)) {
+						console.log('Blog Not Found.')
+						let apiResponse = response.generate(true, 'Blog Not Found', 404, null)
+						reject(apiResponse)
+					} else {
+						console.log('Blog Found.')
+						resolve(blog)
+					}
+				})
+			})
+		}
+}
 /**
  * function to delete the assignment collection.
  */
 let deleteBlog = (req, res) => {
-    BlogModel.remove({ 'blogId': req.params.blogId }, (err, result) => {
-        if (err) {
-            console.log(err)
-            res.send(err)
-        } else if (result == undefined || result == null || result == '') {
-            console.log('No Blog Found')
-            res.send("No Blog Found")
-        } else {
-            res.send(result)
 
-        }
-    })
+    if (check.isEmpty(req.params.blogId)) {
+
+        console.log('blogId should be passed')
+        let apiResponse = response.generate(true, 'blogId is missing', 403, null)
+        res.send(apiResponse)
+    } else {
+
+        BlogModel.remove({ 'blogId': req.params.blogId }, (err, result) => {
+            if (err) {
+                console.log('Error Occured.')
+                logger.error(`Error Occured : ${err}`, 'Database', 10)
+                let apiResponse = response.generate(true, 'Error Occured.', 500, null)
+                res.send(apiResponse)
+            } else if (check.isEmpty(result)) {
+                console.log('Blog Not Found.')
+                let apiResponse = response.generate(true, 'Blog Not Found.', 404, null)
+                res.send(apiResponse)
+            } else {
+                console.log('Blog Deletion Success')
+                let apiResponse = response.generate(false, 'Blog Deleted Successfully', 200, result)
+                res.send(apiResponse)
+            }
+        })
+    }
 }
 /**
  * function to increase views of a blog.
  */
 let increaseBlogView = (req, res) => {
+    
+    if (check.isEmpty(req.params.blogId)) {
 
-    BlogModel.findOne({ 'blogId': req.params.blogId }, (err, result) => {
+        console.log('blogId should be passed')
+        let apiResponse = response.generate(true, 'blogId is missing', 403, null)
+        res.send(apiResponse)
+    } else {
 
-        if (err) {
-            console.log(err)
-            res.send(err)
-        } else if (result == undefined || result == null || result == '') {
-            console.log('No Blog Found')
-            res.send("No Blog Found")
-        } else {
-            
-            result.views += 1;
-            result.save(function (err, result) {
-                if (err) {
-                    console.log(err)
-                    res.send(err)
-                }
-                else {
-                    console.log("Blog updated successfully")
-                    res.send(result)
+        BlogModel.findOne({ 'blogId': req.params.blogId }, (err, result) => {
 
-                }
-            });// end result
+            if (err) {
 
-        }
-    })
+                console.log('Error Occured.')
+                logger.error(`Error Occured : ${err}`, 'Database', 10)
+                let apiResponse = response.generate(true, 'Error Occured.', 500, null)
+                res.send(apiResponse)
+            } else if (check.isEmpty(result)) {
+
+                console.log('Blog Not Found.')
+                let apiResponse = response.generate(true, 'Blog Not Found', 404, null)
+                res.send(apiResponse)
+            } else {
+                result.views += 1;
+                result.save(function(err,result){
+                    if(err){
+                        console.log('Error Occured.')
+                        logger.error(`Error Occured : ${err}`, 'Database', 10)
+                        let apiResponse = response.generate(true, 'Error Occured While saving blog', 500, null)
+                        res.send(apiResponse)
+                    }
+                    else{
+                        console.log('Blog Updated Successfully')
+                        let apiResponse = response.generate(false, 'Blog Updated Successfully.', 200, result)
+                        res.send(apiResponse)
+                    }
+                });// end result
+                
+            }
+        })
+    }
 }
 module.exports={
     helloWorldFunction:helloWorldFunction,
     printExample:printExample,
     testBody:testBody,
     testQuery:testQuery,
-    testRoute:testRoute
+    testRoute:testRoute,
+    getAllBlog: getAllBlog,
+    createBlog: createBlog,
+    viewByBlogId: viewByBlogId,
+    viewByCategory: viewByCategory,
+    viewByAuthor: viewByAuthor,
+    editBlog: editBlog,
+    deleteBlog: deleteBlog,
+    increaseBlogView : increaseBlogView
 }
