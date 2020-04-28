@@ -1,13 +1,14 @@
 const express = require("express");
 const appConfig=require("./../config/appConfig")
+const time =require('./../libs/timeLib')
 
 let requestIpLogger=(req,res,next)=>{
     let remoteIp=req.connection.remoteAdddress+'://'+req.connection.remotePort;
     let realIp=req.headers['X-REAL-IP'];
-    console.log(req.method+"Request Made from "+ remoteIp+'for route'+req.originalUrl)
+    console.log(req.method+"Request Made from "+ remoteIp+'for route'+req.originalUrl+ '@ time: '+time.now())
     if(req.method==='OPTIONS')
     {
-        console.log('!OPTIONS');
+        console.log('!OPTIONS'+'@ Time:'+time.now());
         var headers={};
         headers["Access-Control-Allow-Origins"]="*";
         headers["Access-Control-Allow-Methods"]="POST,GET,PUT,DELETE,OPTIONS";

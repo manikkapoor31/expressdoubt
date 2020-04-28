@@ -1,6 +1,8 @@
 const express=require('express');
 const mongoose=require('mongoose');
 const shortid=require('shortid')
+const time= require('./../libs/timeLib')
+const check=require('./../libs/checkLib')
 
 const BlogModel=mongoose.model('Blog')
 //  mongoose.connect('mongodb://localhost');
@@ -15,11 +17,13 @@ let getAllBlog=(req,res)=>{
     BlogModel.find().select('-__V - _id').lean().exec((err,result)=>{
         if(err){
             console.log(err);
+            logger.error(err.message,'Blog Controller:getAllBlog',10)
             let apiResponse=response.generate(true,'Failed To Find Blog Details',500,null)
             res.send(apiResponse);
         }
         else if(result == undefined || result == null || result == ''){
             console.log("No Blog Found")
+            logger.info('no bog found','BLog Controller:getAllBlog')
             let apiResponse=response.generate(true,'No Blog Found',404,null)
             res.send(apiResponse)
         }
@@ -39,8 +43,8 @@ let createBlog=(req,res)=>{
         isPublished:true,
         category:req.body.category,
         author:req.body.fullName,
-        created:today,
-        lastModified:today
+        created:time.now(),
+        lastModified:time.now()
     })
     let tags=(req.body.tags!=undefined&&req.body.tags!=null&&req.body.tags!='')?req.body.tags.split(','):[] 
     newBlog.tags=tags
