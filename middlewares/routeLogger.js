@@ -27,8 +27,7 @@ let requestIpLogger=(req,res,next)=>{
         //end of cors config
         next()
     }
-    module.exports={
-        logIp:requestIpLogger
-    }
-
+}
+module.exports={
+    logIp:requestIpLogger
 }

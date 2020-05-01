@@ -10,7 +10,8 @@ const appConfig=require('./config/appConfig');
 const cookieParser=require('cookie-parser')
 const bodyParser= require('body-parser')
 const globalErrorMiddleware=require('./middlewares/appErrorHandler');
-const routeLoggerMiddleware=require('./middlewares/routeLogger.js')
+const routeLoggerMiddleware=require('./middlewares/routeLogger')
+const helmet=require('helmet')
 const app = express()
 
 
@@ -23,6 +24,7 @@ app.use(cookieParser())
 
 app.use(globalErrorMiddleware.globalErrorHandler)
 app.use(routeLoggerMiddleware.logIp)
+app.use(helmet)
 
 //Bootstrap Models
 let modelsPath='./models';

@@ -9,5 +9,5 @@ let generate=(err,message,status,data)=>
     return response;
 }
 module.exports={
-    generate:generate;
+    generate:generate
 }
