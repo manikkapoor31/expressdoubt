@@ -50,7 +50,7 @@ let setRouter=(app)=>{
      * 
      * @apiParam {String} authToken The token for authentication.( Send authToken as query parameter, body parameter,body parameter or as a header)
      * 
-     * @api SuccessExample {json} Success-Response
+     * @apiSuccessExample {json} Success-Response
      * {
      * "error":false,
      * "message":"All Blog Details Found",
@@ -87,7 +87,7 @@ let setRouter=(app)=>{
      * @apiParam {String} authToken The token for authentication.( Send authToken as query parameter, body parameter,body parameter or as a header)
      * @apiParam {String} blogId The Blog Id should be passed as the URL parameter
      * 
-     * @api SuccessExample {json} Success-Response
+     * @apiSuccessExample {json} Success-Response
      * {
      * "error":false,
      * "message":"Blog Found Successfully",
@@ -127,7 +127,7 @@ let setRouter=(app)=>{
      * @apiParam {String} authToken The token for authentication.( Send authToken as query parameter, body parameter,body parameter or as a header)
      * @apiParam {String} author The Author name should be passed as the URL parameter
      * 
-     * @api SuccessExample {json} Success-Response
+     * @apiSuccessExample {json} Success-Response
      * {
      * "error":false,
      * "message":"Blog Found Successfully",
@@ -148,7 +148,7 @@ let setRouter=(app)=>{
      *  }
      * }
      * }
-     * @apiErrorExample{json} Error-response
+     * @apiErrorExample {json} Error-response
      * {
      *   "error":"true",
      *   "message":"Error Occured",
@@ -165,7 +165,7 @@ let setRouter=(app)=>{
      * @apiParam {String} authToken The token for authentication.( Send authToken as query parameter, body parameter,body parameter or as a header)
      * @apiParam {String} category The category of the blog should be passed as the URL parameter
      * 
-     * @api SuccessExample {json} Success-Response
+     * @apiSuccessExample {json} Success-Response
      * {
      * "error":false,
      * "message":"Blog Found Successfully",
@@ -186,7 +186,7 @@ let setRouter=(app)=>{
      *  }
      * }
      * }
-     * @apiErrorExample{json} Error-response
+     * @apiErrorExample {json} Error-response
      * {
      *   "error":"true",
      *   "message":"Error Occured",

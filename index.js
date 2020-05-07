@@ -24,7 +24,7 @@ app.use(cookieParser())
 
 app.use(globalErrorMiddleware.globalErrorHandler)
 app.use(routeLoggerMiddleware.logIp)
-app.use(helmet)
+app.use(helmet())
 
 //Bootstrap Models
 let modelsPath='./models';

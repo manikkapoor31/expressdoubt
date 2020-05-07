@@ -1,4 +1,4 @@
-let appConfig={}
+    let appConfig={}
 
 appConfig.port=3000//port has to be 4 digits
 appConfig.allowedCorsOrigin="*";
